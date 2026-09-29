@@ -83,12 +83,14 @@ public:
 
 	// 2's comp
 	void negate() {
+		int w = cnt;                         
 		flipBits();
-		int cy = 1;
-		for (Cell *c = tl; c && cy; c = c->pv) {
-			if (c->val == 1) c->val = 0;
-			else { c->val = 1; cy = 0; }
-		}
+		BinList one;
+		one.load("1");
+		BinList r = plus(*this, one);       
+		while (r.cnt > w) r.dropFirst();     
+		while (r.cnt < w) r.prepend(0);      
+		*this = r;
 	}
 
 	// addition
